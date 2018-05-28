@@ -1,0 +1,113 @@
+.background {
+  background-color: whitesmoke;
+  min-width: 20px;
+  min-height: 20px;
+  max-height: 20px;
+  padding: 0;
+  margin: 0;
+  float: left;
+}
+
+.grid-piece{
+  position: relative;
+  z-index: 1;
+  border-color: gray !important;
+}
+
+.horizontal{
+  width: 20px;
+  height: 1px;
+  border-bottom: 1px solid;
+  top: 4px;
+  left: 0px;
+}
+
+.vertical {
+  width: 1px;
+  height: 20px;
+  border-right: 1px solid;
+  top: -6px;
+  left: 9px;
+}
+
+.red {
+  border-color: red !important;
+  background-color: red;
+}
+
+.blue {
+  border-color: blue !important;
+}
+
+.dot {
+  width: 1px;
+  height: 1px;
+  border-radius: 100%;
+  border: 2px solid;
+  position: relative;
+  top: 8px;
+  left: 8px;
+  z-index: 2;
+}
+
+.wall-piece {
+  width: 14px;
+  height: 1px;
+  border-bottom: 1px solid;
+  position: absolute;
+  z-index: 2;
+}
+.UL {
+  -webkit-transform:
+    translateY(4.5px)
+    translateX(-1px)
+    rotate(45deg);
+}
+.U {
+  width: 1px;
+  height: 10px;
+  border-left: 1px solid red;
+  -webkit-transform:
+    translateY(0px)
+    translateX(9.5px);
+}
+.UR {
+  -webkit-transform:
+    translateY(3.5px)
+    translateX(9px)
+    rotate(-45deg);
+}
+.L{
+  width: 10px;
+  -webkit-transform:
+    translateY(9.5px)
+    translateX(0px)
+}
+.R{
+  width: 10px;
+  -webkit-transform:
+    translateY(9.5px)
+    translateX(10.5px)
+}
+
+.DL {
+  -webkit-transform:
+    translateY(14.5px)
+    translateX(-2px)
+    rotate(-45deg);
+}
+.D {
+  width: 1px;
+  height: 10px;
+  border-left: 1px solid red;
+  -webkit-transform:
+    translateY(10px)
+    translateX(9.5px);
+}
+
+.DR {
+  -webkit-transform:
+    translateY(15.5px)
+    translateX(10px)
+    rotate(45deg);
+}
