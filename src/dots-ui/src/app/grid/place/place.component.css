@@ -37,6 +37,8 @@
 
 .blue {
   border-color: blue !important;
+  background-color: blue;
+
 }
 
 .dot {
@@ -48,6 +50,14 @@
   top: 8px;
   left: 8px;
   z-index: 2;
+}
+
+.ghost-dot{
+  opacity: 0.5;
+}
+
+.dot:hover {
+  opacity: 0.5;
 }
 
 .wall-piece {
@@ -66,7 +76,7 @@
 .U {
   width: 1px;
   height: 10px;
-  border-left: 1px solid red;
+  border-left: 1px solid;
   -webkit-transform:
     translateY(0px)
     translateX(9.5px);
@@ -99,7 +109,7 @@
 .D {
   width: 1px;
   height: 10px;
-  border-left: 1px solid red;
+  border-left: 1px solid;
   -webkit-transform:
     translateY(10px)
     translateX(9.5px);

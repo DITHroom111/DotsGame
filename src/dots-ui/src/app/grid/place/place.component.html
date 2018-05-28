@@ -1,13 +1,13 @@
-<div class="background">
-  <div class="red wall-piece UL"></div>
-  <div class="red wall-piece U"></div>
-  <div class="red wall-piece UR"></div>
-  <div class="red wall-piece L"></div>
-  <div class="red wall-piece R"></div>
-  <div class="red wall-piece DL"></div>
-  <div class="red wall-piece D"></div>
-  <div class="red wall-piece DR"></div>
-  <div class="red dot"></div>
+<div class="background" (mouseenter)="showGhostDot()" (mouseleave)="hideGhostDot()" (click)="putDot()">
+  <div [ngClass]="owner.color" class="wall-piece UL" *ngIf="walls.UL"></div>
+  <div [ngClass]="owner.color" class="wall-piece U"  *ngIf="walls.U"></div>
+  <div [ngClass]="owner.color" class="wall-piece UR" *ngIf="walls.UR"></div>
+  <div [ngClass]="owner.color" class="wall-piece L"  *ngIf="walls.L"></div>
+  <div [ngClass]="owner.color" class="wall-piece R"  *ngIf="walls.R"></div>
+  <div [ngClass]="owner.color" class="wall-piece DL" *ngIf="walls.DL"></div>
+  <div [ngClass]="owner.color" class="wall-piece D"  *ngIf="walls.D"></div>
+  <div [ngClass]="owner.color" class="wall-piece DR" *ngIf="walls.DR"></div>
+  <div [ngClass]="owner.color" class="dot" [ngStyle]="{'opacity': isGhostDot || isDot ? (isDot ? '1.0' : '0.5') : '0.0'}"></div>
   <div class="grid-piece horizontal"></div>
   <div class="grid-piece vertical"></div>
 </div>

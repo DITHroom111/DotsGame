@@ -8,7 +8,6 @@ import {OnInit} from '@angular/core';
 })
 export class GridComponent implements OnInit{
   ngOnInit(): void {
-    console.log('shit');
   }
 
 }
