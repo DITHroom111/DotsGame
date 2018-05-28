@@ -1,8 +1,3 @@
 <div class="grid">
-  <place></place>
-  <place></place>
-  <place></place>
-  <place></place>
-  <place></place>
-  <place></place>
+  <place *ngFor="let dummy of ' '.repeat(31*39).split(''), let i = index" [coords]="getCoords(i)"></place>
 </div>

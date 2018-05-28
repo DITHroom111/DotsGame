@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {OnInit} from '@angular/core';
+import {Coords} from '../shared/coords.model';
 
 @Component({
   selector: 'grid',
@@ -8,6 +9,10 @@ import {OnInit} from '@angular/core';
 })
 export class GridComponent implements OnInit{
   ngOnInit(): void {
+  }
+
+  getCoords(i: number): Coords {
+    return new Coords(i % 39, Math.floor(i / 39));
   }
 
 }

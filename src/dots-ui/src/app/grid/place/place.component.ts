@@ -1,13 +1,18 @@
 import {Component} from '@angular/core';
 import {ENEMY, ME, Player} from '../../shared/player.model';
 import {Walls} from './walls.model';
+import {Input} from '@angular/core';
+import {OnInit} from '@angular/core';
+import {Coords} from '../../shared/coords.model';
 
 @Component({
   selector: 'place',
   templateUrl: './place.component.html',
   styleUrls: ['./place.component.css']
 })
-export class PlaceComponent {
+export class PlaceComponent implements OnInit{
+  @Input() coords: Coords;
+
   isDot: boolean = false;
   isGhostDot: boolean = false;
   owner: Player = ME;
@@ -22,21 +27,25 @@ export class PlaceComponent {
     DR: false
   };
 
-  showGhostDot() {
+  showGhostDot(): void {
     if(!this.isDot) {
       this.isGhostDot = true;
     }
   }
-  hideGhostDot() {
+  hideGhostDot(): void {
     if(!this.isDot) {
       this.isGhostDot = false;
     }
   }
 
-  putDot() {
+  putDot(): void {
     if(!this.isDot) {
       this.isDot = true;
+      console.log(this.coords);
     }
+  }
+
+  ngOnInit(): void {
   }
 }
 
