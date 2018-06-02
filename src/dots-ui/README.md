@@ -2,9 +2,13 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.5.
 
+## Installation
+
+Before running the web application for the first time, [install Node.js](). Then, navigate to `DotsGame/src/dots-ui` and run `npm install` to install the application's dependencies. Consider running `npm install` each time the dependencies list is changed to update the installed packages.
+
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
