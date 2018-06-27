@@ -1,0 +1,250 @@
+swagger: "2.0"
+info:
+  description: "Realization of pen-and-paper game dots with bot using RL"
+  version: "1.0.0"
+  title: "DotsGame"
+  contact:
+    url: "https://github.com/DITHroom111"
+host: "localhost:8000"
+basePath: "/"
+tags:
+- name: "general"
+  description: "General tools for the game app"
+- name: "game events"
+  description: "Players' turns and other in-game events"
+schemes:
+- "http"
+paths:
+  /games:
+    post:
+      tags:
+      - "general"
+      summary: "Start a new game"
+      operationId: "start"
+      responses:
+        200:
+          description: "New game started successfully with the specified ID"
+          schema:
+            type: "number" # Game ID of new game
+            format: "int64"
+            example: 1
+  /games/{gameId}:
+    get:
+      tags:
+      - "game events"
+      summary: "Get the state after enemy turn"
+      operationId: "getState"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "gameId"
+        in: "path"
+        required: true
+        type: "number"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/State"
+        404:
+          description: "Game not found"
+    
+  /games/{gameId}/makeTurn:
+    post:
+      tags:
+      - "game events"
+      summary: "Make a turn"
+      operationId: "makeTurn"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "gameId"
+        in: "path"
+        required: true
+        type: "number"
+      - in: "body"
+        name: "turn"
+        description: "Player makes a turn by setting a dot on the specified place"
+        required: true
+        schema:
+          $ref: "#/definitions/Coords"
+      responses:
+        200:
+          description: "Successful turn"
+          schema:
+            $ref: "#/definitions/State"
+        400:
+          description: "Illegal turn"
+        404:
+          description: "Game not found"
+          
+  /games/{gameId}/resign:
+    post:
+        tags:
+        - "game events"
+        summary: "Give up"
+        operationId: "resign"
+        parameters:
+        - name: "gameId"
+          in: "path"
+          required: true
+          type: "number"
+        responses:
+          200:
+            description: "OK"
+            schema:
+              $ref: "#/definitions/State"
+          400:
+            description: "Can't resign"
+          404:
+            description: "Game not found"
+            
+  /games/{gameId}/requestDraw:
+    post:
+      tags:
+      - "game events"
+      summary: "Offer a draw"
+      operationId: "requestDraw"
+      parameters:
+      - name: "gameId"
+        in: "path"
+        required: true
+        type: "number"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/State"
+        400:
+          description: "Can't request draw"
+        404:
+          description: "Game not found"
+          
+  /games/{gameId}/confirmDraw:
+    post:
+      tags:
+      - "game events"
+      summary: "Confirm the opponent's request for a draw"
+      operationId: "confirmDraw"
+      parameters:
+      - name: "gameId"
+        in: "path"
+        required: true
+        type: "number"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/State"
+        400:
+          description: "No draw request"
+        404:
+          description: "Game not found"
+          
+  /games/{gameId}/declineDraw:
+    post:
+      tags:
+      - "game events"
+      summary: "Decline the opponent's request for a draw"
+      operationId: "declineDraw"
+      parameters:
+      - name: "gameId"
+        in: "path"
+        required: true
+        type: "number"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/State"
+        400:
+          description: "No draw request"
+        404:
+          description: "Game not found"
+  
+  /games/{gameId}/finish:
+    post:
+      tags:
+      - "game events"
+      summary: "Finish the game"
+      operationId: "finish"
+      parameters:
+      - name: "gameId"
+        in: "path"
+        required: true
+        type: "number"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/State"
+        400:
+          description: "Can't finish"
+        404:
+          description: "Game not found"
+  
+definitions:
+  Coords:
+    type: "object"
+    properties:
+      x: 
+        type: "number"
+        minimum: 0
+        maximum: 38
+      y:
+        type: "number"
+        minimum: 0
+        maximum: 30
+  State:
+    type: "object"
+    properties:
+      score:
+        $ref: "#/definitions/Score"
+      newDots:
+        type: "array"
+        items:
+          $ref: "#/definitions/Dot"
+      newWalls:
+        type: "array"
+        items:
+          $ref: "#/definitions/Wall"
+      specialEvents:
+        type: "string"
+        enum:
+        - "RESIGN"
+        - "REQUEST_DRAW"
+        - "CONFIRM_DRAW"
+        - "DECLINE_DRAW"
+        - "FINISH"
+        - "GAMEOVER"
+        - "NONE"
+    
+      
+  Score:
+    type: "object"
+    properties:
+      player1: 
+        type: "number"
+        format: "int32"
+        minimum: 0
+      player2: 
+        type: "number"
+        format: "int32"
+        minimum: 0
+  Dot:
+    type: "object"
+    properties:
+      owner:
+        type: "number"
+        format: "int32"
+      coords:
+        $ref: "#/definitions/Coords"
+  Wall: 
+    type: "object"
+    properties:
+      dots:
+        type: "array"
+        items:
+          $ref: "#/definitions/Coords"
