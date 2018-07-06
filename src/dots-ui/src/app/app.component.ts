@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {GameService} from "./service/game.service";
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,14 @@ import {Component} from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  gameIsActive: boolean = false;
+  gameId: number;
+
+  constructor(private gameService: GameService) {}
+  startGame() {
+    this.gameService.startGame().subscribe(res => {
+      this.gameId = res;
+      this.gameIsActive = true;
+    });
+  }
 }

@@ -1,1 +1,4 @@
-<grid></grid>
+<div class="container">
+  <button (click)="startGame()" [hidden]="gameIsActive">Start Game</button>
+  <game *ngIf="gameIsActive" [gameId]="gameId"></game>
+</div>

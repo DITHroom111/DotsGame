@@ -1,0 +1,12 @@
+.score{
+  font-size: 30pt;
+  text-align: center;
+}
+
+.me {
+  color: blue;
+}
+
+.enemy {
+  color: red
+}

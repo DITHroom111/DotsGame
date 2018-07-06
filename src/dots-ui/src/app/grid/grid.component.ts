@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {OnInit} from '@angular/core';
 import {Coords} from '../shared/coords.model';
 
