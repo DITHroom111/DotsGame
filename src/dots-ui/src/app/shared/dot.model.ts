@@ -9,4 +9,8 @@ export class Dot {
     this.owner = owner;
     this.coords = coords;
   }
+
+  directionTo(other: Dot): Coords {
+    return new Coords(other.coords.x - this.coords.x, other.coords.y - this.coords.y)
+  }
 }

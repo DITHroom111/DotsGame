@@ -22,11 +22,14 @@ export class GameService {
   }
 
   makeTurn(coords: Coords): Observable<State> {
-    console.log(coords);
+    let dots: Dot[] = [new Dot(ME, new Coords(1, 2)),
+                       new Dot(ME, new Coords(2, 1)),
+                       new Dot(ME, new Coords(3, 2)),
+                       new Dot(ME, new Coords(2, 3))];
     return of({
       score: Score.of(4, 20),
-      newDots: [new Dot(ME, coords)],
-      newWalls: [],
+      newDots: dots,
+      newWalls: [new Wall(dots)],
       specialEvents: null
     });
   }

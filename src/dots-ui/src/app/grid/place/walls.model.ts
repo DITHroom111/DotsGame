@@ -1,4 +1,4 @@
-export class Walls {
+export class WallPieces {
   UL: boolean = false;
   U: boolean = false;
   UR: boolean = false;
