@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, Output, SimpleChanges} from '@angular/core';
 import {ENEMY, ME, Player} from '../../shared/player.model';
 import {Walls} from './walls.model';
 import {Input} from '@angular/core';
@@ -12,6 +12,8 @@ import {Coords} from '../../shared/coords.model';
 })
 export class PlaceComponent implements OnInit{
   @Input() coords: Coords;
+  @Input() enabled: boolean = true;
+  @Output() onSetDot: EventEmitter<Coords> = new EventEmitter <Coords>();
 
   isDot: boolean = false;
   isGhostDot: boolean = false;
@@ -38,14 +40,24 @@ export class PlaceComponent implements OnInit{
     }
   }
 
-  putDot(): void {
-    if(!this.isDot) {
-      this.isDot = true;
-      console.log(this.coords);
+  setDot(): void {
+    if(this.enabled && !this.isDot) {
+      this.onSetDot.emit(this.coords);
     }
   }
 
+  putDot(owner: Player): void {
+    this.owner = owner;
+    this.isDot = true;
+  }
+
   ngOnInit(): void {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.enabled) {
+      this.enabled = changes.enabled.currentValue;
+    }
   }
 }
 

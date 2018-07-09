@@ -1,5 +1,5 @@
 <div class="background"
-     (mouseenter)="showGhostDot()" (mouseleave)="hideGhostDot()" (click)="putDot()">
+     (mouseenter)="showGhostDot()" (mouseleave)="hideGhostDot()" (click)="setDot()">
   <div [ngClass]="owner.color" class="wall-piece UL" *ngIf="walls.UL"></div>
   <div [ngClass]="owner.color" class="wall-piece U"  *ngIf="walls.U"></div>
   <div [ngClass]="owner.color" class="wall-piece UR" *ngIf="walls.UR"></div>

@@ -1,4 +1,6 @@
 <div class="grid">
-  <place *ngFor="let dummy of ' '.repeat(31*39).split(''), let i = index"
-         [coords]="getCoords(i)"></place>
+  <place *ngFor="let dummy of ' '.repeat(31*39).split(''), let i = index" id="{{i}}"
+         [coords]="getCoords(i)" [enabled]="enabled"
+         (onSetDot)="makeTurn($event)"></place>
 </div>
+<button (click)="toggle()">Toggle grid</button>
