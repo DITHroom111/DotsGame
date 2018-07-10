@@ -34,7 +34,7 @@ export class GameService {
       score: Score.of(40, 20),
       newDots: dots,
       newWalls: [new Wall(dots)],
-      specialEvents: SpecialEvents.GAMEOVER
+      specialEvents: SpecialEvents.NONE
     });
   }
 
@@ -43,7 +43,7 @@ export class GameService {
       score: Score.of(14, 88),
       newDots: [new Dot(ENEMY, new Coords(0,0))],
       newWalls: [],
-      specialEvents: SpecialEvents.NONE
+      specialEvents: SpecialEvents.REQUEST_DRAW
     })
   }
 
@@ -63,6 +63,33 @@ export class GameService {
       newDots: [],
       newWalls: [],
       specialEvents: SpecialEvents.GAMEOVER
+    })
+  }
+
+  declineDraw(): Observable<State> {
+    return of({
+      score: Score.of(14, 88),
+      newDots: [new Dot(ENEMY, new Coords(0, 0))],
+      newWalls: [],
+      specialEvents: SpecialEvents.NONE
+    })
+  }
+
+  confirmDraw() {
+    return of({
+      score: Score.of(14, 88),
+      newDots: [],
+      newWalls: [],
+      specialEvents: SpecialEvents.GAMEOVER
+    })
+  }
+
+  requestDraw(): Observable<State> {
+    return of({
+      score: Score.of(14, 88),
+      newDots: [],
+      newWalls: [],
+      specialEvents: SpecialEvents.CONFIRM_DRAW
     })
   }
 }

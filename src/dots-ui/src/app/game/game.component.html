@@ -5,16 +5,29 @@
     Your turn
     <div>
       <button (click)="resign()">Resign</button>
+      <button (click)="requestDraw()" [disabled]="opponentDeclinedDraw">Request Draw</button>
     </div>
   </div>
-  <div *ngIf="!isMyTurn">Your opponent's turn, wait...</div>
-  <div class="loader" *ngIf="!isMyTurn"></div>
+  <div *ngIf="!isMyTurn && !opponentRequestsDraw">
+    Your opponent's turn, wait...
+    <div class="loader"></div>
+  </div>
+
 </div>
+<div *ngIf="opponentRequestsDraw">
+  Opponent requests draw.
+  <button (click)="declineDraw()">Decline</button>
+  <button (click)="confirmDraw()">Confirm</button>
+</div>
+<div *ngIf="opponentDeclinedDraw">Opponent declines draw.</div>
 <div *ngIf="resigned">You have resigned.</div>
 <div *ngIf="opponentResigned">Opponent has resigned.</div>
 <div *ngIf="gameOver">
-  <div *ngIf="win">You win!</div>
-  <div *ngIf="!win">You lose.</div>
+  <div *ngIf="draw">Draw.</div>
+  <div *ngIf="!draw">
+    <div *ngIf="win">You win!</div>
+    <div *ngIf="!win">You lose.</div>
+  </div>
   <div>
     <button (click)="quit()">Quit</button>
   </div>

@@ -21,10 +21,13 @@ export class GameComponent implements OnInit, AfterViewInit{
 
   isMyTurn: boolean;
 
+  opponentRequestsDraw: boolean = false;
+  opponentDeclinedDraw: boolean = false;
   resigned: boolean = false;
   opponentResigned: boolean = false;
   gameOver: boolean = false;
   win: boolean;
+  draw: boolean;
 
   constructor(private gameService: GameService) {}
 
@@ -53,6 +56,7 @@ export class GameComponent implements OnInit, AfterViewInit{
   }
 
   endTurn(): void {
+    this.opponentDeclinedDraw = false;
     this.isMyTurn = false;
     this.grid.disable();
   }
@@ -90,7 +94,7 @@ export class GameComponent implements OnInit, AfterViewInit{
     this.gameService.getState()
       .subscribe(state => {
         this.applyState(state);
-        if(!this.gameOver) {
+        if(this.canStartTurn()) {
           this.startTurn();
         }
       })
@@ -104,6 +108,14 @@ export class GameComponent implements OnInit, AfterViewInit{
       case SpecialEvents.GAMEOVER:
         this.onGameOver();
         break;
+      case SpecialEvents.REQUEST_DRAW:
+        this.onRequestDraw();
+        break;
+      case SpecialEvents.CONFIRM_DRAW:
+        this.onConfirmDraw();
+        break;
+      case SpecialEvents.DECLINE_DRAW:
+          this.onDeclineDraw();
     }
   }
 
@@ -117,5 +129,51 @@ export class GameComponent implements OnInit, AfterViewInit{
   private onGameOver(): void {
     this.gameOver = true;
     this.win = !this.resigned && this.score.score.me > this.score.score.enemy;
+  }
+
+  private onRequestDraw() {
+    this.opponentRequestsDraw = true;
+  }
+
+  declineDraw(): void {
+    this.opponentRequestsDraw = false;
+    this.gameService.declineDraw()
+      .subscribe(state => {
+        this.applyState(state);
+        if (this.canStartTurn()) {
+          this.startTurn();
+        }
+      })
+  }
+
+  confirmDraw(): void {
+    this.opponentRequestsDraw = false;
+    this.gameService.confirmDraw()
+      .subscribe(state => {
+        this.applyState(state);
+        this.draw = true;
+      })
+  }
+
+  requestDraw() {
+    this.endTurn();
+    this.gameService.requestDraw()
+      .subscribe(state => {
+        this.applyState(state);
+      });
+  }
+
+  private canStartTurn() {
+    return !this.opponentRequestsDraw && !this.gameOver
+  }
+
+  private onConfirmDraw() {
+    this.gameOver = true;
+    this.draw = true;
+  }
+
+  private onDeclineDraw() {
+    this.opponentDeclinedDraw = true;
+    this.startTurn();
   }
 }
