@@ -1,5 +1,21 @@
 <score #score></score>
 <grid #grid (onMakeTurn)="makeTurn($event)"></grid>
-<div *ngIf="isMyTurn">Your turn</div>
-<div *ngIf="!isMyTurn">Your opponent's turn, wait...</div>
-<div class="loader" *ngIf="!isMyTurn"></div>
+<div *ngIf="!gameOver">
+  <div *ngIf="isMyTurn">
+    Your turn
+    <div>
+      <button (click)="resign()">Resign</button>
+    </div>
+  </div>
+  <div *ngIf="!isMyTurn">Your opponent's turn, wait...</div>
+  <div class="loader" *ngIf="!isMyTurn"></div>
+</div>
+<div *ngIf="resigned">You have resigned.</div>
+<div *ngIf="opponentResigned">Opponent has resigned.</div>
+<div *ngIf="gameOver">
+  <div *ngIf="win">You win!</div>
+  <div *ngIf="!win">You lose.</div>
+  <div>
+    <button (click)="quit()">Quit</button>
+  </div>
+</div>

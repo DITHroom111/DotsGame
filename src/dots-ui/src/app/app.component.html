@@ -1,4 +1,4 @@
 <div class="container">
   <button (click)="startGame()" [hidden]="gameIsActive">Start Game</button>
-  <game *ngIf="gameIsActive" [gameId]="gameId" [playerId]="playerId"></game>
+  <game *ngIf="gameIsActive" [playerId]="playerId" (close)="endGame()"></game>
 </div>
