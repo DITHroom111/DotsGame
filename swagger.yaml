@@ -25,9 +25,18 @@ paths:
         200:
           description: "New game started successfully with the specified ID"
           schema:
-            type: "number" # Game ID of new game
-            format: "int64"
-            example: 1
+            type: "object"
+            properties:
+              gameId:
+                type: "integer"
+                format: "int64"
+                description: "Game ID of new game"
+              playerId:
+                type: "integer"
+                format: "int32"
+                minimum: 1
+                maximum: 2
+                description: "Player ID for the client"
   /games/{gameId}:
     get:
       tags:
@@ -40,7 +49,7 @@ paths:
       - name: "gameId"
         in: "path"
         required: true
-        type: "number"
+        type: "integer"
       responses:
         200:
           description: "OK"
@@ -48,7 +57,7 @@ paths:
             $ref: "#/definitions/State"
         404:
           description: "Game not found"
-    
+
   /games/{gameId}/makeTurn:
     post:
       tags:
@@ -63,7 +72,7 @@ paths:
       - name: "gameId"
         in: "path"
         required: true
-        type: "number"
+        type: "integer"
       - in: "body"
         name: "turn"
         description: "Player makes a turn by setting a dot on the specified place"
@@ -79,7 +88,7 @@ paths:
           description: "Illegal turn"
         404:
           description: "Game not found"
-          
+
   /games/{gameId}/resign:
     post:
         tags:
@@ -90,7 +99,7 @@ paths:
         - name: "gameId"
           in: "path"
           required: true
-          type: "number"
+          type: "integer"
         responses:
           200:
             description: "OK"
@@ -100,7 +109,7 @@ paths:
             description: "Can't resign"
           404:
             description: "Game not found"
-            
+
   /games/{gameId}/requestDraw:
     post:
       tags:
@@ -111,7 +120,7 @@ paths:
       - name: "gameId"
         in: "path"
         required: true
-        type: "number"
+        type: "integer"
       responses:
         200:
           description: "OK"
@@ -121,7 +130,7 @@ paths:
           description: "Can't request draw"
         404:
           description: "Game not found"
-          
+
   /games/{gameId}/confirmDraw:
     post:
       tags:
@@ -132,7 +141,7 @@ paths:
       - name: "gameId"
         in: "path"
         required: true
-        type: "number"
+        type: "integer"
       responses:
         200:
           description: "OK"
@@ -142,7 +151,7 @@ paths:
           description: "No draw request"
         404:
           description: "Game not found"
-          
+
   /games/{gameId}/declineDraw:
     post:
       tags:
@@ -153,7 +162,7 @@ paths:
       - name: "gameId"
         in: "path"
         required: true
-        type: "number"
+        type: "integer"
       responses:
         200:
           description: "OK"
@@ -163,7 +172,7 @@ paths:
           description: "No draw request"
         404:
           description: "Game not found"
-  
+
   /games/{gameId}/finish:
     post:
       tags:
@@ -174,7 +183,7 @@ paths:
       - name: "gameId"
         in: "path"
         required: true
-        type: "number"
+        type: "integer"
       responses:
         200:
           description: "OK"
@@ -184,17 +193,19 @@ paths:
           description: "Can't finish"
         404:
           description: "Game not found"
-  
+
 definitions:
   Coords:
     type: "object"
     properties:
-      x: 
-        type: "number"
+      x:
+        type: "integer"
+        format: "int32"
         minimum: 0
         maximum: 38
       y:
-        type: "number"
+        type: "integer"
+        format: "int32"
         minimum: 0
         maximum: 30
   State:
@@ -220,25 +231,27 @@ definitions:
         - "FINISH"
         - "GAMEOVER"
         - "NONE"
-    
-      
+
+
   Score:
     type: "object"
     properties:
-      player1: 
-        type: "number"
+      player1:
+        type: "integer"
         format: "int32"
         minimum: 0
-      player2: 
-        type: "number"
+      player2:
+        type: "integer"
         format: "int32"
         minimum: 0
   Dot:
     type: "object"
     properties:
       owner:
-        type: "number"
+        type: "integer"
         format: "int32"
+        minimum: 1
+        maximum: 2
       coords:
         $ref: "#/definitions/Coords"
   Wall: 
