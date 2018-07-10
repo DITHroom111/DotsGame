@@ -8,17 +8,20 @@ import {Score} from "../shared/score.model";
 import {Wall} from "../shared/wall.model";
 import {Dot} from "../shared/dot.model";
 import {ENEMY, ME} from "../shared/player.model";
+import {GameData} from "../shared/game-data.model";
 
 @Injectable()
 export class GameService {
   private apiUrl: string = '/games/';
+  private gameId: number;
+  private playerId: number;
 
   constructor(private http: HttpClient) {
   }
 
-  startGame(): Observable<number> {
+  startGame(): Observable<GameData> {
     //return this.http.post<number>(this.apiUrl, {}, {});
-    return of(0);
+    return of({gameId: 0, playerId: 1});
   }
 
   makeTurn(coords: Coords): Observable<State> {
@@ -41,5 +44,10 @@ export class GameService {
       newWalls: [],
       specialEvents: null
     })
+  }
+
+  private fromDto(dotDto: {owner: number, coords: Coords}): Dot {
+    let ownerPlayer = dotDto.owner == this.playerId? ME : ENEMY;
+    return new Dot(ownerPlayer, dotDto.coords);
   }
 }
