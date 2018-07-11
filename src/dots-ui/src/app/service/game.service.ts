@@ -17,6 +17,7 @@ export class GameService {
   private gameId: number;
   private playerId: number;
 
+  killMe: number = 0;
   constructor(private http: HttpClient) {
   }
 
@@ -26,10 +27,7 @@ export class GameService {
   }
 
   makeTurn(coords: Coords): Observable<State> {
-    let dots: Dot[] = [new Dot(ME, new Coords(1, 2)),
-                       new Dot(ME, new Coords(2, 1)),
-                       new Dot(ME, new Coords(3, 2)),
-                       new Dot(ME, new Coords(2, 3))];
+    let dots: Dot[] = [new Dot(ME,coords)];
     return of({
       score: Score.of(40, 20),
       newDots: dots,
@@ -39,11 +37,12 @@ export class GameService {
   }
 
   getState(): Observable<State> {
+    this.killMe += 1;
     return of({
       score: Score.of(14, 88),
-      newDots: [new Dot(ENEMY, new Coords(0,0))],
+      newDots: [new Dot(ENEMY, new Coords(this.killMe,0))],
       newWalls: [],
-      specialEvents: SpecialEvents.REQUEST_DRAW
+      specialEvents: this.killMe < 10? SpecialEvents.NONE : SpecialEvents.GAMEOVER
     })
   }
 
@@ -90,6 +89,15 @@ export class GameService {
       newDots: [],
       newWalls: [],
       specialEvents: SpecialEvents.CONFIRM_DRAW
+    })
+  }
+
+  finish(): Observable<State> {
+    return of({
+      score: Score.of(14, 88),
+      newDots: [new Dot(ENEMY, new Coords(10, 10))],
+      newWalls: [],
+      specialEvents: SpecialEvents.NONE
     })
   }
 }

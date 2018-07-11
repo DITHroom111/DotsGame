@@ -24,7 +24,9 @@ export class GameComponent implements OnInit, AfterViewInit{
   opponentRequestsDraw: boolean = false;
   opponentDeclinedDraw: boolean = false;
   resigned: boolean = false;
+  finished: boolean = false;
   opponentResigned: boolean = false;
+  opponentFinished: boolean = false;
   gameOver: boolean = false;
   win: boolean;
   draw: boolean;
@@ -36,9 +38,7 @@ export class GameComponent implements OnInit, AfterViewInit{
     this.gameService.makeTurn(coords).subscribe(
       state => {
         this.applyState(state);
-        if(!this.gameOver) {
-          this.getEnemyTurn();
-        }
+        this.getEnemyTurn();
       }
     )
   }
@@ -86,18 +86,35 @@ export class GameComponent implements OnInit, AfterViewInit{
       });
   }
 
+  finish(): void {
+    this.endTurn();
+    this.finished = true;
+    this.gameService.finish()
+      .subscribe(state => {
+        this.applyState(state);
+        while (this.enemyMakesTurn()) {
+          this.getEnemyTurn();
+        }
+      });
+  }
+
   quit(): void {
     this.close.emit();
   }
 
   private getEnemyTurn() {
-    this.gameService.getState()
-      .subscribe(state => {
-        this.applyState(state);
-        if(this.canStartTurn()) {
-          this.startTurn();
-        }
-      })
+    if(this.enemyMakesTurn()) {
+      this.gameService.getState()
+        .subscribe(state => {
+          this.applyState(state);
+          if (this.canStartTurn()) {
+            this.startTurn();
+          }
+        })
+    }
+    else {
+      this.startTurn();
+    }
   }
 
   private handleEvent(specialEvents: string) {
@@ -115,7 +132,11 @@ export class GameComponent implements OnInit, AfterViewInit{
         this.onConfirmDraw();
         break;
       case SpecialEvents.DECLINE_DRAW:
-          this.onDeclineDraw();
+        this.onDeclineDraw();
+        break;
+      case SpecialEvents.FINISH:
+        this.onFinish();
+        break;
     }
   }
 
@@ -128,11 +149,16 @@ export class GameComponent implements OnInit, AfterViewInit{
 
   private onGameOver(): void {
     this.gameOver = true;
+    this.grid.disable();
     this.win = !this.resigned && this.score.score.me > this.score.score.enemy;
   }
 
-  private onRequestDraw() {
+  private onRequestDraw(): void {
     this.opponentRequestsDraw = true;
+  }
+
+  private onFinish(): void {
+    this.opponentFinished = true;
   }
 
   declineDraw(): void {
@@ -175,5 +201,9 @@ export class GameComponent implements OnInit, AfterViewInit{
   private onDeclineDraw() {
     this.opponentDeclinedDraw = true;
     this.startTurn();
+  }
+
+  private enemyMakesTurn() {
+    return !this.opponentFinished && !this.gameOver;
   }
 }
